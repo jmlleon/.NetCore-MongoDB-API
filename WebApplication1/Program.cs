@@ -1,3 +1,11 @@
+
+
+using Application_Layer.Services;
+using Domain_Layer.Interfaces.Repositories;
+using Domain_Layer.Interfaces.Services;
+using Domain_Layer.Model;
+using Infraestructure_Layer.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,13 +15,31 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.Configure<SchoolDBSettings>(builder.Configuration.GetSection("SchoolDBSettings"));
+
+#region Infraestructure_Layer
+
+
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+
+
+#endregion
+
+#region Application_Layer
+
+builder.Services.AddScoped<IStudentService,StudentService>();
+
+#endregion
+
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+   // app.UseSwagger();
+    //app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
