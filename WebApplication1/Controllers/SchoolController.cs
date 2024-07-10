@@ -21,12 +21,11 @@ namespace MongoAPI.Controllers
 
             _studentService = studentService;
 
-
         }
 
         // GET: api/<SchoolController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StudentDTO>>> Get()
+        public async Task<ActionResult<IEnumerable<StudentDTO>>> GetAll()
         {
 
             try
@@ -37,7 +36,6 @@ namespace MongoAPI.Controllers
             }
             catch (Exception ex)
             {
-
                 return  BadRequest($"{ex.Message}");  
             }       
            
@@ -63,7 +61,7 @@ namespace MongoAPI.Controllers
 
         // POST api/<SchoolController>string value
         [HttpPost]
-        public async Task<ActionResult> Post( [FromBody] StudentDTO studentDTO)
+        public async Task<ActionResult> Post([FromBody] StudentDTO studentDTO)
         {
 
             try
@@ -83,17 +81,18 @@ namespace MongoAPI.Controllers
 
         // PUT api/<SchoolController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(string id, [FromBody] string value)
+        public async Task<ActionResult> Put(string id, [FromBody] StudentDTO studentDTO)
         {
             try
             {
-                //Check for equal value id and value
+                
+                if (id != studentDTO.Id) { return BadRequest("Error on ID"); }
 
-                Student student = new Student
+                Student student = new()
                 {
                     Id = id,
-                    Name = value,
-                    Age = 0
+                    Name = studentDTO.Name,
+                    Age = studentDTO.Age
                 };
 
                 await _studentService.UpdateAsync(id, student);

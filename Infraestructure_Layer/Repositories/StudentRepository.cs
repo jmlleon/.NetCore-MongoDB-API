@@ -20,9 +20,7 @@ namespace Infraestructure_Layer.Repositories
         public StudentRepository(IOptions<SchoolDBSettings> schoolDBSettings)
         {
             var mongoClient = new MongoClient(schoolDBSettings.Value.ConnectionString);
-
             var mongoDatabase = mongoClient.GetDatabase(schoolDBSettings.Value.DatabaseName);
-
             _studentCollection = mongoDatabase.GetCollection<Student>(schoolDBSettings.Value.StudentsCollectionName);
         }
 
@@ -37,7 +35,6 @@ namespace Infraestructure_Layer.Repositories
         public async Task RemoveAsync(string id) => await _studentCollection.DeleteOneAsync(x => x.Id == id);
 
     }
-
 
     
 }
