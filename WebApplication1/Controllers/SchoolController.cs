@@ -50,6 +50,8 @@ namespace MongoAPI.Controllers
             {
                 var student = await _studentService.GetByIdAsync(id);
 
+                if(student == null) { return NotFound(); }
+
                 return Ok(student);
             }
             catch (Exception ex)
@@ -65,10 +67,14 @@ namespace MongoAPI.Controllers
         {
 
             try
-            {
-                Student student = new Student();
+            {               
 
-                await _studentService.CreateAsync(student);
+                await _studentService.CreateAsync(new Student
+                {
+                    Id = studentDTO.Id,
+                    Name = studentDTO.Name,
+                    Age = studentDTO.Age
+                });
 
                 return Ok();
             }
@@ -86,16 +92,14 @@ namespace MongoAPI.Controllers
             try
             {
                 
-                if (id != studentDTO.Id) { return BadRequest("Error on ID"); }
+                if (id != studentDTO.Id) { return BadRequest("Error on ID"); }               
 
-                Student student = new()
+                await _studentService.UpdateAsync(id, new Student
                 {
                     Id = id,
                     Name = studentDTO.Name,
                     Age = studentDTO.Age
-                };
-
-                await _studentService.UpdateAsync(id, student);
+                });
 
                 return Ok();
             }
