@@ -27,6 +27,7 @@ namespace MongoAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StudentDTO>>> GetAll()
         {
+                       
 
             try
             {
@@ -43,6 +44,8 @@ namespace MongoAPI.Controllers
 
         // GET api/<SchoolController>/5
         [HttpGet("{id}")]
+        //[ProducesResponseType(typeof(StudentDTO), StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<StudentDTO>> Get(string id)
         {
 
@@ -67,16 +70,17 @@ namespace MongoAPI.Controllers
         {
 
             try
-            {               
+            {                    
+                    await _studentService.CreateAsync(new Student
+                    {
+                        Id = studentDTO.Id,
+                        Name = studentDTO.Name,
+                        Age = studentDTO.Age
+                    });
 
-                await _studentService.CreateAsync(new Student
-                {
-                    Id = studentDTO.Id,
-                    Name = studentDTO.Name,
-                    Age = studentDTO.Age
-                });
-
-                return Ok();
+                return CreatedAtAction(nameof(Student), studentDTO);
+                
+                
             }
             catch (Exception ex)
             {
