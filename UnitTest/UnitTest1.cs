@@ -14,17 +14,10 @@ namespace UnitTest
     [TestClass]
     public class UnitTest1
     {
-        /*private readonly IStudentRepository _studentRepository;       
-
-        public UnitTest1(IStudentRepository studentRepository) {
-
-            _studentRepository = studentRepository;   
         
-        }*/
-
 
         [TestMethod]
-        public async Task TestMethod1()
+        public async Task TestMethodService()
         {          
             //Arrange
             var mockRepository = new Mock<IStudentRepository>();
@@ -57,10 +50,8 @@ namespace UnitTest
 
             //Assert HttpStatusCode.OK
             Assert.IsNotNull(resultContent?.Value);
-            Assert.AreEqual((int)HttpStatusCode.OK, resultContent.StatusCode);
-           
-            //Assert.IsInstanceOfType(OkObjectResult, typeof(result.));
-           // Console.WriteLine(resultContent.Value);           
+            Assert.AreEqual((int)HttpStatusCode.OK, resultContent.StatusCode);          
+                    
 
 
         }
