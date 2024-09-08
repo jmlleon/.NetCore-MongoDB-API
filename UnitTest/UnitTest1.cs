@@ -4,8 +4,10 @@ using Domain_Layer.Interfaces.Repositories;
 using Domain_Layer.Interfaces.Services;
 using Domain_Layer.Model;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MongoAPI.Controllers;
+using MongoDB.Driver;
 using Moq;
 using System.Net;
 
@@ -56,6 +58,31 @@ namespace UnitTest
 
         }
 
-       
+        [TestMethod]
+        public async Task TestMethodDeleteNotFound()
+        {
+
+            //Arrange
+            var mockRepo = new Mock<IStudentService>();            
+            mockRepo.Setup(repo => repo.RemoveAsync("6684133c18929ad45acc8988")).ReturnsAsync(1);
+            var schoolController = new SchoolController(mockRepo.Object);
+
+            //Act
+
+            var result = await schoolController.Delete("6684133c18929ad45acc8988");
+            var resultContent = result as NotFoundResult;
+            //var resultContent = result as OkResult;
+
+            
+            //Assert NotFoundResult
+
+            Assert.IsTrue(result is NotFoundResult);
+            //Assert.IsTrue(result is OkResult);
+
+
+
+        }
+
+
     }
 }

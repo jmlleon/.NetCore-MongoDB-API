@@ -1,0 +1,35 @@
+﻿@MongoAPI_HostAddress = https://localhost:44306
+
+GET {{MongoAPI_HostAddress}}/school
+
+###
+
+POST {{MongoAPI_HostAddress}}/school
+Content-Type: application/json
+
+{
+  "Name":"Roberto Delgado",
+  "Age":28
+}
+
+###
+
+GET {{MongoAPI_HostAddress}}/school/6684133c18929ad45acc8988
+
+###
+
+DELETE {{MongoAPI_HostAddress}}/school/66dca465846de38e146891f7
+
+###
+
+PUT {{MongoAPI_HostAddress}}/school/66dca49e846de38e146891f8
+Content-Type: application/json
+
+{
+    "Id":"66dca49e846de38e146891f4",
+    "Name":"Robertico Delgado",
+    "Age":80
+ 
+}
+
+###

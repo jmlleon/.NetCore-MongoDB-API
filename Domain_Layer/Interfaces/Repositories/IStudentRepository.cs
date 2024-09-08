@@ -14,11 +14,11 @@ namespace Domain_Layer.Interfaces.Repositories
 
         Task<Student?> GetByIdAsync(string id);
 
-        Task CreateAsync(Student student);
+        Task<Student> CreateAsync(Student student);
 
         Task UpdateAsync(string id, Student student);
 
-        Task RemoveAsync(string id);
+        Task<int> RemoveAsync(string id);
 
 
     }
