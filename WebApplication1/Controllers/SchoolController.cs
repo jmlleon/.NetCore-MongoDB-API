@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace MongoAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]//api/
     [ApiController]
     public class SchoolController : ControllerBase
     {       
@@ -53,7 +53,7 @@ namespace MongoAPI.Controllers
             {
                 var student = await _studentService.GetByIdAsync(id);
 
-                if(student == null) { return NotFound(); }
+                if(student is null) { return NotFound(); }
 
                 return Ok(student);
             }
@@ -71,14 +71,13 @@ namespace MongoAPI.Controllers
 
             try
             {                    
-                    await _studentService.CreateAsync(new Student
-                    {
-                        Id = studentDTO.Id,
+                    var student=await _studentService.CreateAsync(new Student
+                    {                       
                         Name = studentDTO.Name,
                         Age = studentDTO.Age
                     });
 
-                return CreatedAtAction(nameof(Student), studentDTO);
+                return CreatedAtAction(nameof(Get), new { id = student.Id }, studentDTO);
                 
                 
             }
@@ -96,7 +95,7 @@ namespace MongoAPI.Controllers
             try
             {
                 
-                if (id != studentDTO.Id) { return BadRequest("Error on ID"); }               
+                if (id != studentDTO.Id) { return BadRequest("The Id Not Mach"); }               
 
                 await _studentService.UpdateAsync(id, new Student
                 {
@@ -120,9 +119,10 @@ namespace MongoAPI.Controllers
         {
             try
             {                
-                await _studentService.RemoveAsync(id);
+                var result=await _studentService.RemoveAsync(id);
 
-                return Ok();
+                return result==1 ? Ok(): NotFound(); 
+              
             }
             catch (Exception ex)
             {

@@ -19,10 +19,32 @@ namespace Application_Layer.Services
 
         public async Task<Student?> GetByIdAsync(string id) => await _studentRepository.GetByIdAsync(id);
 
-        public async Task CreateAsync(Student student) => await _studentRepository.CreateAsync(student);
+        public async Task<Student> CreateAsync(Student student) {
+
+            //Check Not repeat Name and Age
+
+            var studentList= await GetAsync();
+
+            var studentsToSearch=studentList.Where(s=>s.Name==student.Name && s.Age==student.Age).ToList();
+
+            if (studentsToSearch.Count > 0) {
+
+                throw new Exception("There is a student with same name and age");
+            
+            }
+
+           var result= await _studentRepository.CreateAsync(student);
+
+            return result;
+
+        }
 
         public async Task UpdateAsync(string id, Student student) => await _studentRepository.UpdateAsync(id, student);
 
-        public async Task RemoveAsync(string id) => await _studentRepository.RemoveAsync(id);
+        public async Task<int> RemoveAsync(string id) {
+                        
+            return await _studentRepository.RemoveAsync(id);
+        
+        }
     }
 }

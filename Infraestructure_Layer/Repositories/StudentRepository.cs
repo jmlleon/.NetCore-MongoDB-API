@@ -28,11 +28,24 @@ namespace Infraestructure_Layer.Repositories
 
         public async Task<Student?> GetByIdAsync(string id) => await _studentCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-        public async Task CreateAsync(Student student) => await _studentCollection.InsertOneAsync(student);
+        public async Task<Student> CreateAsync(Student student) {
+            
+            await _studentCollection.InsertOneAsync(student); 
+
+            return await _studentCollection.Find(s=>s.Name == student.Name && s.Age==student.Age).FirstOrDefaultAsync();  
+
+
+        }
 
         public async Task UpdateAsync(string id, Student student) => await _studentCollection.ReplaceOneAsync(x => x.Id == id, student);
 
-        public async Task RemoveAsync(string id) => await _studentCollection.DeleteOneAsync(x => x.Id == id);
+        public async Task<int> RemoveAsync(string id) {
+            
+          DeleteResult result=  await _studentCollection.DeleteOneAsync(x => x.Id == id);
+          return result.DeletedCount.Equals(0)?0:1;
+
+        
+        }
 
     }
 

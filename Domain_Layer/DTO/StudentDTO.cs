@@ -5,7 +5,7 @@ namespace Domain_Layer.DTO
 {
     public class StudentDTO
     {
-        [Required(ErrorMessage ="The Title Field is Required")]
+        //[Required(ErrorMessage ="The Title Field is Required")]
         public string Id { get; set; } = "";
         [Required(ErrorMessage ="The Message Field is Required")]
         public string Name { get; set; } = "";
